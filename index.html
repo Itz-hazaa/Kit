@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechShala Arduino Kit — Project Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow:#FFD600; --orange:#FF6B35; --blue:#1A73E8; --green:#2ECC71;
+  --purple:#7C4DFF; --pink:#FF4081; --teal:#00BCD4; --red:#e53935;
+  --navy:#1a1a2e; --bg:#FFFDF4; --card:#ffffff; --text:#1a1a2e; --muted:#6b7280;
+  --border:#e5e7eb; --code-bg:#0f1117;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+/* ═══ HERO ═══ */
+.hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);padding:52px 24px 64px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(124,77,255,.18) 0%,transparent 55%),radial-gradient(circle at 80% 20%,rgba(255,107,53,.18) 0%,transparent 55%),radial-gradient(circle at 60% 80%,rgba(26,115,232,.15) 0%,transparent 55%);}
+.hero-badge{display:inline-block;background:var(--yellow);color:#1a1a2e;font-weight:800;font-size:12px;padding:5px 14px;border-radius:20px;margin-bottom:18px;letter-spacing:1px;text-transform:uppercase;position:relative;}
+.hero h1{font-family:'Fredoka One',cursive;font-size:clamp(34px,6vw,58px);color:white;line-height:1.1;position:relative;margin-bottom:14px;}
+.hero h1 span{color:var(--yellow);}
+.hero p{color:rgba(255,255,255,.72);font-size:17px;max-width:520px;margin:0 auto 28px;position:relative;font-weight:600;}
+.kit-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;position:relative;max-width:700px;margin:0 auto;}
+.kit-chip{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:rgba(255,255,255,.85);}
+
+/* ═══ TABS ═══ */
+.tabs-wrap{background:white;box-shadow:0 2px 20px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.tabs{display:flex;overflow-x:auto;max-width:1000px;margin:0 auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:15px 20px;font-weight:800;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap;}
+.tab.active{border-color:var(--orange);color:var(--orange);}
+.tab:hover:not(.active){background:#fff8f5;color:var(--orange);}
+
+/* ═══ SECTIONS ═══ */
+.section{display:none;padding:36px 20px 80px;max-width:1000px;margin:0 auto;}
+.section.active{display:block;}
+.sec-title{font-family:'Fredoka One',cursive;font-size:30px;margin-bottom:6px;}
+.sec-sub{color:var(--muted);font-size:15px;margin-bottom:32px;font-weight:600;}
+
+/* ═══ COMPONENTS GRID ═══ */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;}
+.comp-card{background:var(--card);border-radius:14px;padding:18px 12px;text-align:center;border:2px solid var(--border);transition:all .2s;cursor:default;}
+.comp-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1);border-color:var(--orange);}
+.comp-icon{font-size:32px;margin-bottom:8px;}
+.comp-name{font-weight:800;font-size:13px;margin-bottom:4px;}
+.comp-qty{background:var(--yellow);color:#1a1a2e;font-size:11px;font-weight:800;padding:2px 8px;border-radius:8px;display:inline-block;}
+
+/* ═══ PROJECT GRID ═══ */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;}
+.proj-card{background:white;border-radius:18px;overflow:hidden;border:2px solid var(--border);transition:all .25s;cursor:pointer;}
+.proj-card:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,.12);border-color:var(--orange);}
+.proj-head{padding:18px 18px 14px;display:flex;align-items:center;gap:12px;}
+.proj-emoji{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.proj-meta h3{font-weight:800;font-size:15px;margin-bottom:4px;}
+.diff{font-size:11px;font-weight:800;padding:3px 10px;border-radius:8px;display:inline-block;}
+.easy{background:#e8f5e9;color:#2e7d32;}
+.medium{background:#fff3e0;color:#e65100;}
+.hard{background:#fce4ec;color:#c2185b;}
+.proj-body{padding:0 18px 18px;}
+.proj-body p{color:var(--muted);font-size:13px;line-height:1.6;font-weight:600;margin-bottom:10px;}
+.parts{display:flex;flex-wrap:wrap;gap:5px;}
+.part{background:#f3f4f6;color:#374151;font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;}
+.open-btn{display:block;width:100%;margin-top:12px;padding:10px;background:var(--orange);color:white;border:none;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;transition:all .2s;}
+.open-btn:hover{background:#e55a28;}
+
+/* ═══ PROJECT DETAIL PAGE ═══ */
+#detail-page{display:none;min-height:100vh;}
+#detail-page.active{display:block;}
+.main-content{display:none;}
+.main-content.active{display:block;}
+
+.detail-hero{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:40px 24px 48px;color:white;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:white;padding:8px 16px;border-radius:12px;cursor:pointer;font-weight:700;font-size:13px;margin-bottom:24px;transition:all .2s;}
+.back-btn:hover{background:rgba(255,255,255,.18);}
+.detail-badge{font-size:11px;font-weight:800;padding:4px 12px;border-radius:12px;display:inline-block;margin-bottom:12px;letter-spacing:.5px;text-transform:uppercase;}
+.detail-title{font-family:'Fredoka One',cursive;font-size:clamp(28px,5vw,46px);line-height:1.1;margin-bottom:10px;}
+.detail-title span{color:var(--yellow);}
+.detail-desc{color:rgba(255,255,255,.72);font-size:16px;max-width:600px;font-weight:600;margin-bottom:24px;}
+.detail-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.detail-chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);font-size:12px;font-weight:700;padding:5px 13px;border-radius:16px;}
+
+/* ═══ DETAIL SECTIONS ═══ */
+.detail-body{max-width:900px;margin:0 auto;padding:32px 20px 80px;}
+.d-section{margin-bottom:40px;}
+.d-section-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+
+/* Steps */
+.steps{display:flex;flex-direction:column;gap:14px;}
+.step{display:flex;gap:16px;background:white;border-radius:16px;padding:20px;border:2px solid var(--border);align-items:flex-start;}
+.step-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:18px;color:white;flex-shrink:0;}
+.step h4{font-weight:800;font-size:15px;margin-bottom:5px;}
+.step p{color:var(--muted);font-size:13px;line-height:1.6;font-weight:600;}
+
+/* Circuit */
+.circuit-box{background:white;border:2px solid var(--border);border-radius:16px;overflow:hidden;}
+.circuit-img{width:100%;display:block;max-height:380px;object-fit:contain;background:#f8f9fa;padding:12px;}
+.circuit-img-placeholder{background:#f0f4ff;padding:28px;text-align:center;}
+.circuit-img-placeholder .icon{font-size:40px;margin-bottom:10px;}
+.circuit-img-placeholder p{color:var(--muted);font-size:13px;font-weight:600;}
+.circuit-img-placeholder a{color:var(--blue);font-weight:700;text-decoration:none;}
+.pin-table{width:100%;border-collapse:collapse;}
+.pin-table th{background:var(--navy);color:white;padding:10px 14px;text-align:left;font-size:12px;font-weight:800;letter-spacing:.5px;}
+.pin-table td{padding:9px 14px;font-size:13px;border-bottom:1px solid var(--border);font-weight:600;}
+.pin-table tr:last-child td{border-bottom:none;}
+.pin-table tr:nth-child(even) td{background:#f9fafb;}
+.pin-comp{font-weight:800;color:var(--navy);}
+.pin-to{color:var(--muted);}
+.pin-dest{font-weight:700;color:var(--blue);}
+.tinkercad-link{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff8f5;border-top:2px solid var(--border);font-size:13px;font-weight:700;color:var(--orange);text-decoration:none;transition:background .2s;}
+.tinkercad-link:hover{background:#fff0e8;}
+
+/* Code */
+.code-block{background:var(--code-bg);border-radius:14px;overflow:hidden;}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#1e2130;}
+.code-header span{font-size:12px;color:#8892a4;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.copy-btn{background:#2d3348;color:#8892a4;border:none;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.copy-btn:hover{background:#3d4465;color:white;}
+.code-dots{display:flex;gap:6px;}
+.dot{width:12px;height:12px;border-radius:50%;}
+.code-pre{padding:20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;color:#e2e8f0;}
+.kw{color:#c792ea;} .fn{color:#82aaff;} .str{color:#c3e88d;} .cmt{color:#546e7a;font-style:italic;} .num{color:#f78c6c;} .pp{color:#89ddff;}
+
+/* Block code */
+.blockcode{display:flex;flex-direction:column;gap:8px;}
+.block{border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:10px;position:relative;}
+.block-setup{background:#e8f5e9;border-left:4px solid #2ECC71;color:#1b5e20;}
+.block-loop{background:#e3f2fd;border-left:4px solid #1A73E8;color:#0d47a1;}
+.block-cond{background:#fff3e0;border-left:4px solid #FF6B35;color:#bf360c;padding-left:28px;}
+.block-action{background:#f3e5f5;border-left:4px solid #7C4DFF;color:#4a148c;padding-left:44px;}
+.block-delay{background:#fce4ec;border-left:4px solid #FF4081;color:#880e4f;padding-left:44px;}
+.block-icon{font-size:16px;flex-shrink:0;}
+.block-indent{width:20px;height:2px;background:currentColor;opacity:.3;flex-shrink:0;}
+
+/* Tip */
+.tip{background:linear-gradient(135deg,#fff8e1,#fff3cd);border:2px solid var(--yellow);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+.tip .icon{font-size:22px;flex-shrink:0;}
+.tip p{font-size:13px;font-weight:700;line-height:1.6;color:#5f4c00;}
+
+/* Nav between projects */
+.proj-nav{display:flex;gap:12px;margin-top:32px;}
+.proj-nav-btn{flex:1;padding:14px;border-radius:14px;border:2px solid var(--border);background:white;cursor:pointer;font-weight:800;font-size:13px;transition:all .2s;color:var(--text);}
+.proj-nav-btn:hover{border-color:var(--orange);color:var(--orange);}
+.proj-nav-btn.next{background:var(--orange);color:white;border-color:var(--orange);}
+.proj-nav-btn.next:hover{background:#e55a28;}
+</style>
+</head>
+<body>
+
+<!-- MAIN SITE -->
+<div id="main-site" class="main-content active">
+
+<div class="hero">
+  <div class="hero-badge">🚀 TechShala Arduino Kit</div>
+  <h1>Learn Electronics by<br><span>Building Real Things!</span></h1>
+  <p>12 hands-on projects — from blinking LEDs to autonomous robots. Every project has code, circuit diagram, and step-by-step guide!</p>
+  <div class="kit-chips">
+    <div class="kit-chip">🧠 Arduino Uno</div>
+    <div class="kit-chip">🚗 2WD Chassis</div>
+    <div class="kit-chip">📺 16x2 LCD</div>
+    <div class="kit-chip">📡 Ultrasonic</div>
+    <div class="kit-chip">🔴 IR Sensor</div>
+    <div class="kit-chip">👁️ PIR Sensor</div>
+    <div class="kit-chip">🌡️ DHT11</div>
+    <div class="kit-chip">☀️ LDR</div>
+    <div class="kit-chip">🔔 Buzzer</div>
+    <div class="kit-chip">⌨️ 4×4 Keypad</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('components',this)">📦 Kit Components</div>
+    <div class="tab" onclick="showTab('projects',this)">🚀 All Projects</div>
+  </div>
+</div>
+
+<!-- COMPONENTS -->
+<div class="section active" id="sec-components">
+  <div class="sec-title">📦 What's in Your Kit?</div>
+  <p class="sec-sub">Every component you need is included. Lay them all out and check the list before starting!</p>
+  <div class="comp-grid">
+    <div class="comp-card"><div class="comp-icon">🧠</div><div class="comp-name">Arduino Uno</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🚗</div><div class="comp-name">2WD Chassis</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">⚙️</div><div class="comp-name">Geared Motors</div><div class="comp-qty">× 2</div></div>
+    <div class="comp-card"><div class="comp-icon">🔋</div><div class="comp-name">Motor Driver L298N</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">📺</div><div class="comp-name">16×2 LCD</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">📡</div><div class="comp-name">Ultrasonic HC-SR04</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🔴</div><div class="comp-name">IR Sensor Module</div><div class="comp-qty">× 2</div></div>
+    <div class="comp-card"><div class="comp-icon">👁️</div><div class="comp-name">PIR Sensor</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🌡️</div><div class="comp-name">DHT11 Sensor</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">☀️</div><div class="comp-name">LDR Module</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🔔</div><div class="comp-name">Buzzer</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">💡</div><div class="comp-name">LEDs + Resistors</div><div class="comp-qty">× 5</div></div>
+    <div class="comp-card"><div class="comp-icon">⌨️</div><div class="comp-name">4×4 Keypad</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🧩</div><div class="comp-name">Breadboard</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🔗</div><div class="comp-name">Jumper Wires</div><div class="comp-qty">× 30+</div></div>
+    <div class="comp-card"><div class="comp-icon">🔌</div><div class="comp-name">USB Cable</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🔋</div><div class="comp-name">Battery Pack</div><div class="comp-qty">× 1</div></div>
+    <div class="comp-card"><div class="comp-icon">🔩</div><div class="comp-name">Screws & Standoffs</div><div class="comp-qty">Set</div></div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="section" id="sec-projects">
+  <div class="sec-title">🚀 All Projects</div>
+  <p class="sec-sub">Click any project to open the full guide with code, circuit, and step-by-step instructions!</p>
+  <div class="proj-grid" id="projGrid"></div>
+</div>
+
+</div><!-- end main-site -->
+
+<!-- DETAIL PAGE -->
+<div id="detail-page">
+  <div class="detail-hero">
+    <button class="back-btn" onclick="goBack()">← Back to Projects</button>
+    <div id="d-badge" class="detail-badge"></div>
+    <div id="d-title" class="detail-title"></div>
+    <div id="d-desc" class="detail-desc"></div>
+    <div id="d-chips" class="detail-chips"></div>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// PROJECT DATA
+// ══════════════════════════════════════
+const PROJECTS = [
+{
+  id:1, emoji:"💡", color:"#fff9c4", diff:"easy", diffLabel:"⭐ Beginner",
+  title:"Blink & Traffic Light Trainer",
+  subtitle:"Learn GPIO control with LEDs and resistors",
+  desc:"Your very first step into electronics! Make LEDs blink, then build a working 3-light traffic sequence.",
+  parts:["Arduino Uno","3× LEDs","3× 220Ω Resistors","Breadboard","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/blink-traffic-light-arduino",
+  pinout:[
+    {comp:"Red LED",pin:"Anode (+)",to:"→",dest:"Pin 8 (via 220Ω)"},
+    {comp:"Red LED",pin:"Cathode (−)",to:"→",dest:"GND"},
+    {comp:"Yellow LED",pin:"Anode (+)",to:"→",dest:"Pin 9 (via 220Ω)"},
+    {comp:"Yellow LED",pin:"Cathode (−)",to:"→",dest:"GND"},
+    {comp:"Green LED",pin:"Anode (+)",to:"→",dest:"Pin 10 (via 220Ω)"},
+    {comp:"Green LED",pin:"Cathode (−)",to:"→",dest:"GND"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Insert LEDs into breadboard",body:"Push the Red, Yellow, and Green LEDs into separate rows. The longer leg is (+) positive, shorter is (−) negative."},
+    {color:"#1A73E8",title:"Add resistors",body:"Connect a 220Ω resistor from each LED's (+) leg to a new row. This protects the LED from burning out!"},
+    {color:"#FF6B35",title:"Wire to Arduino",body:"Use jumper wires: connect each resistor's free end to Pin 8, 9, and 10. Connect all (−) legs together to GND on the Arduino."},
+    {color:"#2ECC71",title:"Upload the code",body:"Open Arduino IDE, paste the code below, and click Upload (→ arrow). Your traffic light will start cycling automatically!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Set Pins 8, 9, 10 as OUTPUT"},
+    {type:"loop",icon:"🔁",text:"Loop: Repeat forever"},
+    {type:"cond",icon:"🔴",text:"Turn ON Red → wait 3 seconds → turn OFF"},
+    {type:"cond",icon:"🟡",text:"Turn ON Yellow → wait 1 second → turn OFF"},
+    {type:"cond",icon:"🟢",text:"Turn ON Green → wait 2 seconds → turn OFF"},
+  ],
+  code:`<span class="cmt">// Traffic Light Trainer — TechShala Kit Project 1</span>
+<span class="kw">int</span> redPin = <span class="num">8</span>;
+<span class="kw">int</span> yellowPin = <span class="num">9</span>;
+<span class="kw">int</span> greenPin = <span class="num">10</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(redPin, OUTPUT);
+  <span class="fn">pinMode</span>(yellowPin, OUTPUT);
+  <span class="fn">pinMode</span>(greenPin, OUTPUT);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cmt">// 🔴 Red phase</span>
+  <span class="fn">digitalWrite</span>(redPin, HIGH);
+  <span class="fn">delay</span>(<span class="num">3000</span>);
+  <span class="fn">digitalWrite</span>(redPin, LOW);
+
+  <span class="cmt">// 🟡 Yellow phase</span>
+  <span class="fn">digitalWrite</span>(yellowPin, HIGH);
+  <span class="fn">delay</span>(<span class="num">1000</span>);
+  <span class="fn">digitalWrite</span>(yellowPin, LOW);
+
+  <span class="cmt">// 🟢 Green phase</span>
+  <span class="fn">digitalWrite</span>(greenPin, HIGH);
+  <span class="fn">delay</span>(<span class="num">2000</span>);
+  <span class="fn">digitalWrite</span>(greenPin, LOW);
+}`
+},
+{
+  id:2, emoji:"📺", color:"#e3f2fd", diff:"easy", diffLabel:"⭐ Beginner",
+  title:"LCD Welcome Message",
+  subtitle:"Show text, scrolling text & custom symbols on 16×2 LCD",
+  desc:"Make your kit say hello to the world! Learn to write messages, scroll text, and draw custom characters on the LCD screen.",
+  parts:["Arduino Uno","16×2 LCD","10kΩ Potentiometer","Breadboard","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/lcd-hello-world-arduino",
+  pinout:[
+    {comp:"LCD VSS",pin:"Pin 1",to:"→",dest:"GND"},
+    {comp:"LCD VDD",pin:"Pin 2",to:"→",dest:"5V"},
+    {comp:"LCD V0",pin:"Pin 3",to:"→",dest:"Potentiometer Middle"},
+    {comp:"LCD RS",pin:"Pin 4",to:"→",dest:"Arduino Pin 12"},
+    {comp:"LCD RW",pin:"Pin 5",to:"→",dest:"GND"},
+    {comp:"LCD EN",pin:"Pin 6",to:"→",dest:"Arduino Pin 11"},
+    {comp:"LCD D4",pin:"Pin 11",to:"→",dest:"Arduino Pin 5"},
+    {comp:"LCD D5",pin:"Pin 12",to:"→",dest:"Arduino Pin 4"},
+    {comp:"LCD D6",pin:"Pin 13",to:"→",dest:"Arduino Pin 3"},
+    {comp:"LCD D7",pin:"Pin 14",to:"→",dest:"Arduino Pin 2"},
+    {comp:"LCD A (LED+)",pin:"Pin 15",to:"→",dest:"5V"},
+    {comp:"LCD K (LED−)",pin:"Pin 16",to:"→",dest:"GND"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Wire the LCD",body:"The LCD has 16 pins. Follow the pin table below carefully. Use the potentiometer to control contrast — turn it until text is clearly visible."},
+    {color:"#1A73E8",title:"Install LiquidCrystal library",body:"Go to Sketch → Include Library → LiquidCrystal. This is built into Arduino IDE — no download needed!"},
+    {color:"#FF6B35",title:"Upload and adjust contrast",body:"After uploading, slowly turn the potentiometer knob until you see clear dark squares, then the text will appear."},
+    {color:"#2ECC71",title:"Try custom characters",body:"The code includes a heart ♥ custom character created with byte arrays. Each row is 5 pixels wide on the LCD!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Initialize LCD 16×2, define custom heart character"},
+    {type:"setup",icon:"📺",text:"Setup: Print 'Hello TechShala!' on row 1"},
+    {type:"setup",icon:"🌍",text:"Setup: Print 'Build. Learn.' on row 2"},
+    {type:"loop",icon:"🔁",text:"Loop: Scroll message left across screen"},
+    {type:"cond",icon:"⏩",text:"Shift display left → wait 300ms → repeat"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+
+<span class="cmt">// LCD pin setup: RS, EN, D4, D5, D6, D7</span>
+LiquidCrystal <span class="fn">lcd</span>(<span class="num">12</span>, <span class="num">11</span>, <span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>);
+
+<span class="cmt">// Custom heart character (5x8 pixels)</span>
+<span class="kw">byte</span> heart[<span class="num">8</span>] = {
+  B00000, B01010, B11111, B11111,
+  B01110, B00100, B00000, B00000
+};
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  lcd.<span class="fn">begin</span>(<span class="num">16</span>, <span class="num">2</span>);
+  lcd.<span class="fn">createChar</span>(<span class="num">0</span>, heart);
+  
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">0</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"TechShala Kit"</span>);
+  lcd.<span class="fn">write</span>(<span class="kw">byte</span>(<span class="num">0</span>)); <span class="cmt">// print heart</span>
+  
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Build. Learn. Make!"</span>);
+  <span class="fn">delay</span>(<span class="num">2000</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cmt">// Scroll the bottom row left</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i < <span class="num">16</span>; i++) {
+    lcd.<span class="fn">scrollDisplayLeft</span>();
+    <span class="fn">delay</span>(<span class="num">300</span>);
+  }
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i < <span class="num">16</span>; i++) {
+    lcd.<span class="fn">scrollDisplayRight</span>();
+    <span class="fn">delay</span>(<span class="num">300</span>);
+  }
+}`
+},
+{
+  id:3, emoji:"🌡️", color:"#e8f5e9", diff:"easy", diffLabel:"⭐ Beginner",
+  title:"Digital Thermometer & Humidity Monitor",
+  subtitle:"Use DHT11 with LCD to show room conditions",
+  desc:"Build a real weather station! Read temperature and humidity from the DHT11 sensor and display live readings on the LCD.",
+  parts:["Arduino Uno","DHT11 Sensor","16×2 LCD","10kΩ Resistor","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/dht11-lcd-thermometer",
+  pinout:[
+    {comp:"DHT11",pin:"VCC",to:"→",dest:"5V"},
+    {comp:"DHT11",pin:"DATA",to:"→",dest:"Arduino Pin 7 (+ 10kΩ to 5V)"},
+    {comp:"DHT11",pin:"GND",to:"→",dest:"GND"},
+    {comp:"LCD",pin:"(all pins)",to:"→",dest:"Same as Project 2"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Install DHT library",body:"Go to Tools → Manage Libraries → search 'DHT sensor library' by Adafruit → Install. Also install 'Adafruit Unified Sensor' when prompted."},
+    {color:"#1A73E8",title:"Connect DHT11",body:"DHT11 has 3 pins (on module): VCC to 5V, GND to GND, DATA to Pin 7. If you have the bare sensor (4 pins), add a 10kΩ pull-up resistor between DATA and VCC."},
+    {color:"#FF6B35",title:"Wire the LCD",body:"Use the same LCD wiring as Project 2. The LCD will show Temperature on line 1 and Humidity on line 2, updating every 2 seconds."},
+    {color:"#2ECC71",title:"Test your readings",body:"Hold the DHT11 between your fingers — the temperature should rise! Breathe on it gently and watch the humidity go up too!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Initialize LCD and DHT11 sensor"},
+    {type:"loop",icon:"🔁",text:"Loop: Read sensor every 2 seconds"},
+    {type:"cond",icon:"🌡️",text:"Read temperature (°C) from DHT11"},
+    {type:"cond",icon:"💧",text:"Read humidity (%) from DHT11"},
+    {type:"action",icon:"📺",text:"Display Temperature on LCD row 1"},
+    {type:"action",icon:"📺",text:"Display Humidity on LCD row 2"},
+    {type:"delay",icon:"⏳",text:"Wait 2 seconds before next reading"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;DHT.h&gt;</span>
+
+<span class="pp">#define</span> DHTPIN <span class="num">7</span>
+<span class="pp">#define</span> DHTTYPE DHT11
+
+DHT <span class="fn">dht</span>(DHTPIN, DHTTYPE);
+LiquidCrystal <span class="fn">lcd</span>(<span class="num">12</span>, <span class="num">11</span>, <span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>);
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  lcd.<span class="fn">begin</span>(<span class="num">16</span>, <span class="num">2</span>);
+  dht.<span class="fn">begin</span>();
+  lcd.<span class="fn">print</span>(<span class="str">"TechShala Temp"</span>);
+  <span class="fn">delay</span>(<span class="num">1500</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">float</span> temp = dht.<span class="fn">readTemperature</span>();
+  <span class="kw">float</span> hum  = dht.<span class="fn">readHumidity</span>();
+
+  <span class="kw">if</span> (<span class="fn">isnan</span>(temp) || <span class="fn">isnan</span>(hum)) {
+    lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">0</span>);
+    lcd.<span class="fn">print</span>(<span class="str">"Sensor Error!   "</span>);
+    <span class="kw">return</span>;
+  }
+
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">0</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Temp: "</span>);
+  lcd.<span class="fn">print</span>(temp, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">" C  "</span>);
+
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Humi: "</span>);
+  lcd.<span class="fn">print</span>(hum, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">" %   "</span>);
+
+  <span class="fn">delay</span>(<span class="num">2000</span>);
+}`
+},
+{
+  id:4, emoji:"📏", color:"#f3e5f5", diff:"medium", diffLabel:"⭐⭐ Medium",
+  title:"Ultrasonic Distance Meter",
+  subtitle:"Measure distance and display it on LCD",
+  desc:"Build your own digital ruler! The HC-SR04 sends sound pulses and measures how long they take to bounce back — just like a bat!",
+  parts:["Arduino Uno","HC-SR04 Sensor","16×2 LCD","Buzzer (optional)","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/hc-sr04-lcd-distance-meter",
+  pinout:[
+    {comp:"HC-SR04",pin:"VCC",to:"→",dest:"5V"},
+    {comp:"HC-SR04",pin:"GND",to:"→",dest:"GND"},
+    {comp:"HC-SR04",pin:"TRIG",to:"→",dest:"Arduino Pin 9"},
+    {comp:"HC-SR04",pin:"ECHO",to:"→",dest:"Arduino Pin 10"},
+    {comp:"LCD",pin:"(all pins)",to:"→",dest:"Same as Project 2"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Connect HC-SR04",body:"The sensor has 4 pins: VCC (5V), GND, TRIG (trigger/send), and ECHO (receive). TRIG sends the sound pulse; ECHO tells us when it came back."},
+    {color:"#1A73E8",title:"Understand the math",body:"Sound travels at 343 m/s. Distance = (time × 0.034) / 2. We divide by 2 because the sound travels to the object AND back!"},
+    {color:"#FF6B35",title:"Wire up the LCD",body:"Add the LCD exactly as in Project 2. The display will show distance in cm on row 1 and in inches on row 2 simultaneously."},
+    {color:"#2ECC71",title:"Test the range",body:"Hold your hand in front of the sensor and move it closer/further. Range is 2cm to 400cm. Objects need to be fairly flat to reflect sound well!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Set TRIG as OUTPUT, ECHO as INPUT, init LCD"},
+    {type:"loop",icon:"🔁",text:"Loop: Measure and display every 200ms"},
+    {type:"cond",icon:"📡",text:"Send 10μs pulse on TRIG pin"},
+    {type:"cond",icon:"⏱️",text:"Measure time until ECHO goes HIGH (pulseIn)"},
+    {type:"action",icon:"📐",text:"Calculate: distance = duration × 0.034 / 2"},
+    {type:"action",icon:"📺",text:"Show distance in cm and inches on LCD"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+
+LiquidCrystal <span class="fn">lcd</span>(<span class="num">12</span>, <span class="num">11</span>, <span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>);
+
+<span class="kw">const int</span> trigPin = <span class="num">9</span>;
+<span class="kw">const int</span> echoPin = <span class="num">10</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(trigPin, OUTPUT);
+  <span class="fn">pinMode</span>(echoPin, INPUT);
+  lcd.<span class="fn">begin</span>(<span class="num">16</span>, <span class="num">2</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Distance Meter"</span>);
+  <span class="fn">delay</span>(<span class="num">1500</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cmt">// Send trigger pulse</span>
+  <span class="fn">digitalWrite</span>(trigPin, LOW);
+  <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(trigPin, HIGH);
+  <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(trigPin, LOW);
+
+  <span class="cmt">// Read echo time</span>
+  <span class="kw">long</span> duration = <span class="fn">pulseIn</span>(echoPin, HIGH);
+  <span class="kw">float</span> cm      = duration * <span class="num">0.034</span> / <span class="num">2</span>;
+  <span class="kw">float</span> inches   = cm / <span class="num">2.54</span>;
+
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">0</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Dist: "</span>);
+  lcd.<span class="fn">print</span>(cm, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">" cm   "</span>);
+
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"      "</span>);
+  lcd.<span class="fn">print</span>(inches, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">" in  "</span>);
+
+  <span class="fn">delay</span>(<span class="num">200</span>);
+}`
+},
+{
+  id:5, emoji:"🤖", color:"#fff3e0", diff:"hard", diffLabel:"⭐⭐⭐ Advanced",
+  title:"Obstacle-Avoidance Robot",
+  subtitle:"HC-SR04 + L298N motor driver to stop/turn near objects",
+  desc:"Your robot drives forward on its own and automatically turns away when it detects a wall or object! This is real autonomous robotics.",
+  parts:["Arduino Uno","2WD Chassis","2× Geared Motors","L298N Driver","HC-SR04","Battery Pack","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/obstacle-avoidance-robot-arduino",
+  pinout:[
+    {comp:"L298N IN1",pin:"",to:"→",dest:"Arduino Pin 2"},
+    {comp:"L298N IN2",pin:"",to:"→",dest:"Arduino Pin 3"},
+    {comp:"L298N IN3",pin:"",to:"→",dest:"Arduino Pin 4"},
+    {comp:"L298N IN4",pin:"",to:"→",dest:"Arduino Pin 5"},
+    {comp:"L298N ENA",pin:"",to:"→",dest:"Arduino Pin 6 (PWM)"},
+    {comp:"L298N ENB",pin:"",to:"→",dest:"Arduino Pin 7 (PWM)"},
+    {comp:"L298N VCC",pin:"",to:"→",dest:"Battery Pack (+)"},
+    {comp:"L298N GND",pin:"",to:"→",dest:"Battery GND + Arduino GND"},
+    {comp:"L298N 5V",pin:"",to:"→",dest:"Arduino 5V"},
+    {comp:"HC-SR04 TRIG",pin:"",to:"→",dest:"Arduino Pin 9"},
+    {comp:"HC-SR04 ECHO",pin:"",to:"→",dest:"Arduino Pin 10"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Assemble the chassis",body:"Attach motors to the chassis frame using screws. Connect the wheels. Mount the Arduino and L298N on top using standoffs. Place the battery pack underneath or at the back."},
+    {color:"#1A73E8",title:"Wire the L298N motor driver",body:"The L298N controls both motors. IN1/IN2 control left motor direction, IN3/IN4 control right motor. ENA and ENB control speed via PWM. Connect motor wires to OUT1/OUT2 and OUT3/OUT4."},
+    {color:"#FF6B35",title:"Mount HC-SR04 at the front",body:"Point the sensor forward. Wire TRIG to Pin 9 and ECHO to Pin 10. This is the robot's 'eyes' — it sees objects in front."},
+    {color:"#2ECC71",title:"Upload and test on floor",body:"Place the robot on the floor (not a table!). It will drive forward, detect any obstacle within 20cm, stop, reverse for 0.5s, then turn right and continue!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Set all motor pins as OUTPUT, init sensor"},
+    {type:"loop",icon:"🔁",text:"Loop: Check distance → decide movement"},
+    {type:"cond",icon:"📡",text:"Measure distance using HC-SR04"},
+    {type:"cond",icon:"⚠️",text:"IF distance < 20cm → obstacle detected!"},
+    {type:"action",icon:"⛔",text:"STOP both motors → reverse for 500ms"},
+    {type:"action",icon:"↪️",text:"Turn RIGHT for 400ms → resume forward"},
+    {type:"cond",icon:"✅",text:"ELSE → drive FORWARD at full speed"},
+  ],
+  code:`<span class="kw">const int</span> IN1=<span class="num">2</span>,IN2=<span class="num">3</span>,IN3=<span class="num">4</span>,IN4=<span class="num">5</span>,ENA=<span class="num">6</span>,ENB=<span class="num">7</span>;
+<span class="kw">const int</span> TRIG=<span class="num">9</span>, ECHO=<span class="num">10</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="kw">int</span> pins[] = {IN1,IN2,IN3,IN4,ENA,ENB};
+  <span class="kw">for</span>(<span class="kw">int</span> i=<span class="num">0</span>;i<<span class="num">6</span>;i++) <span class="fn">pinMode</span>(pins[i], OUTPUT);
+  <span class="fn">pinMode</span>(TRIG, OUTPUT); <span class="fn">pinMode</span>(ECHO, INPUT);
+  <span class="fn">analogWrite</span>(ENA, <span class="num">200</span>); <span class="fn">analogWrite</span>(ENB, <span class="num">200</span>);
+}
+
+<span class="kw">long</span> <span class="fn">getDistance</span>() {
+  <span class="fn">digitalWrite</span>(TRIG, LOW);  <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(TRIG, HIGH); <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(TRIG, LOW);
+  <span class="kw">return</span> <span class="fn">pulseIn</span>(ECHO, HIGH) * <span class="num">0.034</span> / <span class="num">2</span>;
+}
+
+<span class="kw">void</span> <span class="fn">forward</span>()  { <span class="fn">digitalWrite</span>(IN1,HIGH);digitalWrite(IN2,LOW);digitalWrite(IN3,HIGH);digitalWrite(IN4,LOW); }
+<span class="kw">void</span> <span class="fn">backward</span>() { <span class="fn">digitalWrite</span>(IN1,LOW);digitalWrite(IN2,HIGH);digitalWrite(IN3,LOW);digitalWrite(IN4,HIGH); }
+<span class="kw">void</span> <span class="fn">turnRight</span>() { <span class="fn">digitalWrite</span>(IN1,HIGH);digitalWrite(IN2,LOW);digitalWrite(IN3,LOW);digitalWrite(IN4,HIGH); }
+<span class="kw">void</span> <span class="fn">stopMotors</span>(){ <span class="fn">digitalWrite</span>(IN1,LOW);digitalWrite(IN2,LOW);digitalWrite(IN3,LOW);digitalWrite(IN4,LOW); }
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">long</span> dist = <span class="fn">getDistance</span>();
+  <span class="kw">if</span> (dist > <span class="num">0</span> && dist < <span class="num">20</span>) {
+    <span class="fn">stopMotors</span>(); <span class="fn">delay</span>(<span class="num">200</span>);
+    <span class="fn">backward</span>();   <span class="fn">delay</span>(<span class="num">500</span>);
+    <span class="fn">turnRight</span>();  <span class="fn">delay</span>(<span class="num">400</span>);
+  } <span class="kw">else</span> {
+    <span class="fn">forward</span>();
+  }
+}`
+},
+{
+  id:6, emoji:"➡️", color:"#e8f5e9", diff:"hard", diffLabel:"⭐⭐⭐ Advanced",
+  title:"Line Follower Robot",
+  subtitle:"Use IR sensors to follow a black line on white surface",
+  desc:"Watch your robot trace a path like magic! IR sensors detect the contrast between a black line and white surface to steer the robot automatically.",
+  parts:["Arduino Uno","2WD Chassis","2× IR Sensor Modules","L298N Driver","Battery Pack","Black tape on white surface"],
+  tinkercad:"https://www.tinkercad.com/things/line-follower-robot-ir",
+  pinout:[
+    {comp:"Left IR Sensor",pin:"VCC",to:"→",dest:"5V"},
+    {comp:"Left IR Sensor",pin:"GND",to:"→",dest:"GND"},
+    {comp:"Left IR Sensor",pin:"OUT",to:"→",dest:"Arduino Pin 8"},
+    {comp:"Right IR Sensor",pin:"OUT",to:"→",dest:"Arduino Pin 9"},
+    {comp:"L298N",pin:"(all motor pins)",to:"→",dest:"Same as Project 5"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Prepare your track",body:"Stick black electrical tape on a white surface to make a track. Make curves at least 10cm wide. The track should be on a flat, well-lit surface."},
+    {color:"#1A73E8",title:"Mount IR sensors low",body:"Attach both IR sensor modules at the bottom-front of the chassis, about 1–2cm above the ground, pointing downward. Left sensor on left side, right on right."},
+    {color:"#FF6B35",title:"Calibrate the IR sensors",body:"Each IR module has a small blue potentiometer. Adjust it so the LED on the module turns ON when over white surface, and OFF over black line. Test by moving over your track!"},
+    {color:"#2ECC71",title:"Logic: how it steers",body:"Both sensors see WHITE → go forward. Left sees BLACK → turn left. Right sees BLACK → turn right. Both see BLACK → stop (end of track)."},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Set IR pins as INPUT, motor pins as OUTPUT"},
+    {type:"loop",icon:"🔁",text:"Loop: Read both IR sensors constantly"},
+    {type:"cond",icon:"⬆️",text:"Both sensors on WHITE → drive FORWARD"},
+    {type:"cond",icon:"↩️",text:"Left sensor on BLACK → turn LEFT"},
+    {type:"cond",icon:"↪️",text:"Right sensor on BLACK → turn RIGHT"},
+    {type:"action",icon:"⛔",text:"Both on BLACK → STOP (end of track)"},
+  ],
+  code:`<span class="kw">const int</span> leftIR=<span class="num">8</span>, rightIR=<span class="num">9</span>;
+<span class="kw">const int</span> IN1=<span class="num">2</span>,IN2=<span class="num">3</span>,IN3=<span class="num">4</span>,IN4=<span class="num">5</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(leftIR, INPUT); <span class="fn">pinMode</span>(rightIR, INPUT);
+  <span class="fn">pinMode</span>(IN1,OUTPUT); <span class="fn">pinMode</span>(IN2,OUTPUT);
+  <span class="fn">pinMode</span>(IN3,OUTPUT); <span class="fn">pinMode</span>(IN4,OUTPUT);
+}
+
+<span class="kw">void</span> <span class="fn">forward</span>()   {<span class="fn">digitalWrite</span>(IN1,HIGH);digitalWrite(IN2,LOW);digitalWrite(IN3,HIGH);digitalWrite(IN4,LOW);}
+<span class="kw">void</span> <span class="fn">turnLeft</span>()  {<span class="fn">digitalWrite</span>(IN1,LOW);digitalWrite(IN2,HIGH);digitalWrite(IN3,HIGH);digitalWrite(IN4,LOW);}
+<span class="kw">void</span> <span class="fn">turnRight</span>() {<span class="fn">digitalWrite</span>(IN1,HIGH);digitalWrite(IN2,LOW);digitalWrite(IN3,LOW);digitalWrite(IN4,HIGH);}
+<span class="kw">void</span> <span class="fn">stopBot</span>()   {<span class="fn">digitalWrite</span>(IN1,LOW);digitalWrite(IN2,LOW);digitalWrite(IN3,LOW);digitalWrite(IN4,LOW);}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">bool</span> L = <span class="fn">digitalRead</span>(leftIR);   <span class="cmt">// LOW = on black line</span>
+  <span class="kw">bool</span> R = <span class="fn">digitalRead</span>(rightIR);
+
+  <span class="kw">if</span>  (!L && !R) <span class="fn">forward</span>();    <span class="cmt">// both on white</span>
+  <span class="kw">else if</span> (L && !R) <span class="fn">turnLeft</span>(); <span class="cmt">// left on black</span>
+  <span class="kw">else if</span> (!L && R) <span class="fn">turnRight</span>(); <span class="cmt">// right on black</span>
+  <span class="kw">else</span>               <span class="fn">stopBot</span>();   <span class="cmt">// both on black = stop</span>
+}`
+},
+{
+  id:7, emoji:"🛑", color:"#fce4ec", diff:"hard", diffLabel:"⭐⭐⭐ Advanced",
+  title:"Line Follower + Obstacle Stop",
+  subtitle:"Combine IR line sensing with ultrasonic safety stop",
+  desc:"Level up your line follower! Now it follows the line AND automatically stops if something is in the way. Combines two sensor systems together.",
+  parts:["Arduino Uno","2WD Chassis","2× IR Sensors","HC-SR04","L298N Driver","Battery Pack"],
+  tinkercad:"https://www.tinkercad.com/things/line-follower-obstacle-stop",
+  pinout:[
+    {comp:"IR Sensors",pin:"",to:"→",dest:"Same as Project 6"},
+    {comp:"HC-SR04",pin:"TRIG",to:"→",dest:"Arduino Pin 11"},
+    {comp:"HC-SR04",pin:"ECHO",to:"→",dest:"Arduino Pin 12"},
+    {comp:"L298N",pin:"",to:"→",dest:"Same as Project 5"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Build on Project 6",body:"Start with your line follower from Project 6. You just need to add the HC-SR04 sensor at the front and modify the code."},
+    {color:"#1A73E8",title:"Mount the HC-SR04 at front",body:"Attach the ultrasonic sensor facing forward on the chassis. Make sure it's above the IR sensors (which face downward) so it doesn't interfere."},
+    {color:"#FF6B35",title:"Priority logic",body:"In the code, the obstacle check runs FIRST — safety overrides line following. If obstacle detected (<15cm), stop regardless of what IR sensors say."},
+    {color:"#2ECC71",title:"Test combined behavior",body:"Put the robot on a track and place your hand in front of it. It should stop! Remove your hand and it should resume following the line automatically."},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Init IR sensors, HC-SR04, and motors"},
+    {type:"loop",icon:"🔁",text:"Loop: Safety check first, then line follow"},
+    {type:"cond",icon:"📡",text:"Check distance with HC-SR04"},
+    {type:"cond",icon:"⚠️",text:"IF distance < 15cm → EMERGENCY STOP"},
+    {type:"cond",icon:"✅",text:"ELSE → run line following logic (Project 6)"},
+  ],
+  code:`<span class="kw">const int</span> leftIR=<span class="num">8</span>, rightIR=<span class="num">9</span>;
+<span class="kw">const int</span> TRIG=<span class="num">11</span>, ECHO=<span class="num">12</span>;
+<span class="kw">const int</span> IN1=<span class="num">2</span>,IN2=<span class="num">3</span>,IN3=<span class="num">4</span>,IN4=<span class="num">5</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(leftIR,INPUT); <span class="fn">pinMode</span>(rightIR,INPUT);
+  <span class="fn">pinMode</span>(TRIG,OUTPUT); <span class="fn">pinMode</span>(ECHO,INPUT);
+  <span class="fn">pinMode</span>(IN1,OUTPUT); <span class="fn">pinMode</span>(IN2,OUTPUT);
+  <span class="fn">pinMode</span>(IN3,OUTPUT); <span class="fn">pinMode</span>(IN4,OUTPUT);
+}
+
+<span class="kw">long</span> <span class="fn">getDistance</span>() {
+  <span class="fn">digitalWrite</span>(TRIG,LOW); <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(TRIG,HIGH); <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(TRIG,LOW);
+  <span class="kw">return</span> <span class="fn">pulseIn</span>(ECHO,HIGH)*<span class="num">0.034</span>/<span class="num">2</span>;
+}
+
+<span class="kw">void</span> <span class="fn">forward</span>()   {<span class="fn">digitalWrite</span>(IN1,HIGH);digitalWrite(IN2,LOW);digitalWrite(IN3,HIGH);digitalWrite(IN4,LOW);}
+<span class="kw">void</span> <span class="fn">turnLeft</span>()  {<span class="fn">digitalWrite</span>(IN1,LOW);digitalWrite(IN2,HIGH);digitalWrite(IN3,HIGH);digitalWrite(IN4,LOW);}
+<span class="kw">void</span> <span class="fn">turnRight</span>() {<span class="fn">digitalWrite</span>(IN1,HIGH);digitalWrite(IN2,LOW);digitalWrite(IN3,LOW);digitalWrite(IN4,HIGH);}
+<span class="kw">void</span> <span class="fn">stopBot</span>()   {<span class="fn">digitalWrite</span>(IN1,LOW);digitalWrite(IN2,LOW);digitalWrite(IN3,LOW);digitalWrite(IN4,LOW);}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cmt">// 1. Safety check first!</span>
+  <span class="kw">if</span> (<span class="fn">getDistance</span>() < <span class="num">15</span>) { <span class="fn">stopBot</span>(); <span class="kw">return</span>; }
+
+  <span class="cmt">// 2. Line following logic</span>
+  <span class="kw">bool</span> L = <span class="fn">digitalRead</span>(leftIR);
+  <span class="kw">bool</span> R = <span class="fn">digitalRead</span>(rightIR);
+  <span class="kw">if</span>  (!L && !R) <span class="fn">forward</span>();
+  <span class="kw">else if</span> (L && !R) <span class="fn">turnLeft</span>();
+  <span class="kw">else if</span> (!L && R) <span class="fn">turnRight</span>();
+  <span class="kw">else</span>               <span class="fn">stopBot</span>();
+}`
+},
+{
+  id:8, emoji:"👁️", color:"#e8eaf6", diff:"medium", diffLabel:"⭐⭐ Medium",
+  title:"Motion Alarm System",
+  subtitle:"PIR sensor triggers buzzer and LCD warning",
+  desc:"Build a real security alarm! The PIR sensor detects body heat movement up to 7 meters away and triggers a buzzer + LCD warning message.",
+  parts:["Arduino Uno","PIR Sensor","Buzzer","16×2 LCD","LED (optional)","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/pir-motion-alarm-lcd",
+  pinout:[
+    {comp:"PIR Sensor",pin:"VCC",to:"→",dest:"5V"},
+    {comp:"PIR Sensor",pin:"GND",to:"→",dest:"GND"},
+    {comp:"PIR Sensor",pin:"OUT",to:"→",dest:"Arduino Pin 7"},
+    {comp:"Buzzer",pin:"(+)",to:"→",dest:"Arduino Pin 8"},
+    {comp:"Buzzer",pin:"(−)",to:"→",dest:"GND"},
+    {comp:"LCD",pin:"(all pins)",to:"→",dest:"Same as Project 2"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Connect the PIR sensor",body:"The PIR has 3 pins: VCC, OUT, and GND. Some modules have a small potentiometer on the back to adjust sensitivity and delay time. Leave these in the middle position."},
+    {color:"#1A73E8",title:"Wait for PIR to stabilize",body:"After power on, the PIR sensor needs about 30–60 seconds to 'warm up' and calibrate. Don't move during this time! The code handles this with a startup delay."},
+    {color:"#FF6B35",title:"Test detection range",body:"PIR detects body heat (infrared radiation). It works up to 7m. The detection angle is about 120°. Waving your hand in front is the easiest test."},
+    {color:"#2ECC71",title:"Customize the alarm",body:"Edit the ALARM_DURATION value in the code to change how long the buzzer beeps. Try adding an LED for a visual alarm too!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Init LCD, wait 30 seconds for PIR to calibrate"},
+    {type:"setup",icon:"📺",text:"Setup: Show 'System Ready' on LCD"},
+    {type:"loop",icon:"🔁",text:"Loop: Monitor PIR sensor output"},
+    {type:"cond",icon:"⚡",text:"IF PIR detects motion (HIGH signal)"},
+    {type:"action",icon:"🚨",text:"Display '⚠ INTRUDER!' on LCD → Beep buzzer"},
+    {type:"delay",icon:"⏳",text:"Keep alarm for 3 seconds"},
+    {type:"cond",icon:"✅",text:"ELSE → Show 'All Clear' on LCD"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+
+LiquidCrystal <span class="fn">lcd</span>(<span class="num">12</span>, <span class="num">11</span>, <span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>);
+<span class="kw">const int</span> PIR = <span class="num">7</span>, BUZZER = <span class="num">8</span>;
+<span class="kw">const int</span> ALARM_DURATION = <span class="num">3000</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(PIR, INPUT);
+  <span class="fn">pinMode</span>(BUZZER, OUTPUT);
+  lcd.<span class="fn">begin</span>(<span class="num">16</span>, <span class="num">2</span>);
+  
+  lcd.<span class="fn">print</span>(<span class="str">"Calibrating..."</span>);
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Please wait 30s"</span>);
+  <span class="fn">delay</span>(<span class="num">30000</span>); <span class="cmt">// PIR warmup</span>
+  
+  lcd.<span class="fn">clear</span>();
+  lcd.<span class="fn">print</span>(<span class="str">"System Ready!"</span>);
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Monitoring..."</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">if</span> (<span class="fn">digitalRead</span>(PIR) == HIGH) {
+    <span class="cmt">// ALARM!</span>
+    lcd.<span class="fn">clear</span>();
+    lcd.<span class="fn">print</span>(<span class="str">"!! INTRUDER !!"</span>);
+    lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>);
+    lcd.<span class="fn">print</span>(<span class="str">"Motion Detected!"</span>);
+    <span class="fn">tone</span>(BUZZER, <span class="num">1000</span>, ALARM_DURATION);
+    <span class="fn">delay</span>(ALARM_DURATION);
+    lcd.<span class="fn">clear</span>();
+    lcd.<span class="fn">print</span>(<span class="str">"System Ready!"</span>);
+    lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>);
+    lcd.<span class="fn">print</span>(<span class="str">"Monitoring..."</span>);
+  }
+  <span class="fn">delay</span>(<span class="num">100</span>);
+}`
+},
+{
+  id:9, emoji:"☀️", color:"#fff9c4", diff:"easy", diffLabel:"⭐ Beginner",
+  title:"Light-Activated Night Lamp",
+  subtitle:"Use LDR to switch LEDs based on ambient light",
+  desc:"Your smart lamp that knows when it's dark! The LDR (Light Dependent Resistor) measures brightness and automatically turns LEDs on when the room gets dark.",
+  parts:["Arduino Uno","LDR Module","3× LEDs","3× 220Ω Resistors","Breadboard","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/ldr-night-lamp-arduino",
+  pinout:[
+    {comp:"LDR Module",pin:"VCC",to:"→",dest:"5V"},
+    {comp:"LDR Module",pin:"GND",to:"→",dest:"GND"},
+    {comp:"LDR Module",pin:"AO (analog out)",to:"→",dest:"Arduino A0"},
+    {comp:"LED 1",pin:"Anode (+)",to:"→",dest:"Pin 9 via 220Ω"},
+    {comp:"LED 2",pin:"Anode (+)",to:"→",dest:"Pin 10 via 220Ω"},
+    {comp:"LED 3",pin:"Anode (+)",to:"→",dest:"Pin 11 via 220Ω"},
+    {comp:"All LEDs",pin:"Cathode (−)",to:"→",dest:"GND"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Understand the LDR",body:"The LDR gives a HIGH analog value (~900) in darkness and LOW (~100) in bright light. We read this with analogRead() which gives values from 0 to 1023."},
+    {color:"#1A73E8",title:"Connect LDR and LEDs",body:"Connect LDR analog output to pin A0. Wire 3 LEDs to pins 9, 10, 11 through resistors. The LEDs create a brightness effect — more LEDs light up as it gets darker!"},
+    {color:"#FF6B35",title:"Find your threshold",body:"Open Serial Monitor (9600 baud) and cover/uncover the LDR sensor. Watch the values. Set THRESHOLD in the code to a value that's between your light and dark readings."},
+    {color:"#2ECC71",title:"Test day/night simulation",body:"Cover the LDR with your hand to simulate night — LEDs should turn on. Shine a phone flashlight on it — LEDs should turn off. Adjust threshold if needed!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Set LED pins as OUTPUT, init Serial Monitor"},
+    {type:"loop",icon:"🔁",text:"Loop: Read LDR value every 500ms"},
+    {type:"cond",icon:"☀️",text:"Read analog value from A0 (0=bright, 1023=dark)"},
+    {type:"cond",icon:"🌙",text:"IF value > 600 → it's dark → turn ON all LEDs"},
+    {type:"action",icon:"💡",text:"ELSE → it's bright → turn OFF all LEDs"},
+  ],
+  code:`<span class="kw">const int</span> ldrPin = A0;
+<span class="kw">const int</span> led1=<span class="num">9</span>, led2=<span class="num">10</span>, led3=<span class="num">11</span>;
+<span class="kw">const int</span> THRESHOLD = <span class="num">600</span>; <span class="cmt">// adjust for your room</span>
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(led1, OUTPUT);
+  <span class="fn">pinMode</span>(led2, OUTPUT);
+  <span class="fn">pinMode</span>(led3, OUTPUT);
+  Serial.<span class="fn">begin</span>(<span class="num">9600</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">int</span> lightVal = <span class="fn">analogRead</span>(ldrPin);
+  Serial.<span class="fn">print</span>(<span class="str">"Light level: "</span>);
+  Serial.<span class="fn">println</span>(lightVal);
+
+  <span class="kw">if</span> (lightVal > THRESHOLD) {
+    <span class="cmt">// It's dark — turn on lamps!</span>
+    <span class="fn">digitalWrite</span>(led1, HIGH);
+    <span class="fn">digitalWrite</span>(led2, HIGH);
+    <span class="fn">digitalWrite</span>(led3, HIGH);
+  } <span class="kw">else</span> {
+    <span class="cmt">// It's bright — save power</span>
+    <span class="fn">digitalWrite</span>(led1, LOW);
+    <span class="fn">digitalWrite</span>(led2, LOW);
+    <span class="fn">digitalWrite</span>(led3, LOW);
+  }
+  <span class="fn">delay</span>(<span class="num">500</span>);
+}`
+},
+{
+  id:10, emoji:"⌨️", color:"#fce4ec", diff:"medium", diffLabel:"⭐⭐ Medium",
+  title:"Keypad Password Lock",
+  subtitle:"Enter a code on the keypad, see status on LCD",
+  desc:"Enter a secret password on the 4×4 keypad and get ACCESS GRANTED or ACCESS DENIED on the LCD! Learn about string comparison and input handling.",
+  parts:["Arduino Uno","4×4 Keypad","16×2 LCD","Buzzer","LED (red+green)","Jumper Wires"],
+  tinkercad:"https://www.tinkercad.com/things/keypad-password-lock-lcd",
+  pinout:[
+    {comp:"Keypad Row 1-4",pin:"R1,R2,R3,R4",to:"→",dest:"Arduino Pins 2,3,4,5"},
+    {comp:"Keypad Col 1-4",pin:"C1,C2,C3,C4",to:"→",dest:"Arduino Pins 6,7,8,9"},
+    {comp:"Green LED",pin:"Anode",to:"→",dest:"Pin 10 via 220Ω"},
+    {comp:"Red LED",pin:"Anode",to:"→",dest:"Pin 11 via 220Ω"},
+    {comp:"Buzzer",pin:"(+)",to:"→",dest:"Pin 12"},
+    {comp:"LCD",pin:"(all pins)",to:"→",dest:"A0,A1,A2,A3,A4,A5"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Install Keypad library",body:"Go to Tools → Manage Libraries → search 'Keypad' by Mark Stanley → Install. This library handles all the row/column scanning for you!"},
+    {color:"#1A73E8",title:"Understand keypad scanning",body:"The 4×4 keypad has 8 wires (4 rows + 4 columns). The library detects which button is pressed by checking which row and column wire gets connected."},
+    {color:"#FF6B35",title:"Wire the LCD to analog pins",body:"For this project, use analog pins (A0–A5) for the LCD so digital pins 2–9 are free for the keypad. Analog pins work as digital outputs too!"},
+    {color:"#2ECC71",title:"Change the password",body:"Find PASSWORD in the code and change it to your own secret code! Press '#' to confirm your entry, and '*' to clear and start over."},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Init keypad, LCD, set password = '1234'"},
+    {type:"loop",icon:"🔁",text:"Loop: Wait for keypad input"},
+    {type:"cond",icon:"⌨️",text:"IF key pressed → add to input string, show '*' on LCD"},
+    {type:"cond",icon:"#️⃣",text:"IF '#' pressed → check password"},
+    {type:"action",icon:"✅",text:"Password matches → GREEN LED + 'ACCESS GRANTED'"},
+    {type:"action",icon:"❌",text:"Wrong password → RED LED + buzzer + 'ACCESS DENIED'"},
+    {type:"cond",icon:"*️⃣",text:"IF '*' pressed → clear input and start over"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;Keypad.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+
+LiquidCrystal <span class="fn">lcd</span>(A0, A1, A2, A3, A4, A5);
+
+<span class="kw">const char</span>* PASSWORD = <span class="str">"1234"</span>; <span class="cmt">// change this!</span>
+String inputStr = <span class="str">""</span>;
+
+<span class="kw">const byte</span> ROWS=<span class="num">4</span>, COLS=<span class="num">4</span>;
+<span class="kw">char</span> keys[ROWS][COLS] = {
+  {<span class="str">'1'</span>,<span class="str">'2'</span>,<span class="str">'3'</span>,<span class="str">'A'</span>},
+  {<span class="str">'4'</span>,<span class="str">'5'</span>,<span class="str">'6'</span>,<span class="str">'B'</span>},
+  {<span class="str">'7'</span>,<span class="str">'8'</span>,<span class="str">'9'</span>,<span class="str">'C'</span>},
+  {<span class="str">'*'</span>,<span class="str">'0'</span>,<span class="str">'#'</span>,<span class="str">'D'</span>}
+};
+<span class="kw">byte</span> rowPins[<span class="num">4</span>] = {<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>};
+<span class="kw">byte</span> colPins[<span class="num">4</span>] = {<span class="num">6</span>,<span class="num">7</span>,<span class="num">8</span>,<span class="num">9</span>};
+Keypad <span class="fn">kpd</span>(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  lcd.<span class="fn">begin</span>(<span class="num">16</span>,<span class="num">2</span>);
+  <span class="fn">pinMode</span>(<span class="num">10</span>,OUTPUT); <span class="fn">pinMode</span>(<span class="num">11</span>,OUTPUT); <span class="fn">pinMode</span>(<span class="num">12</span>,OUTPUT);
+  lcd.<span class="fn">print</span>(<span class="str">"Enter Password:"</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">char</span> key = kpd.<span class="fn">getKey</span>();
+  <span class="kw">if</span> (!key) <span class="kw">return</span>;
+
+  <span class="kw">if</span> (key == <span class="str">'*'</span>) { inputStr=<span class="str">""</span>; lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="str">"                "</span>); <span class="kw">return</span>; }
+
+  <span class="kw">if</span> (key == <span class="str">'#'</span>) {
+    <span class="kw">if</span> (inputStr == PASSWORD) {
+      lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="str">"ACCESS GRANTED! "</span>);
+      <span class="fn">digitalWrite</span>(<span class="num">10</span>,HIGH); <span class="fn">delay</span>(<span class="num">2000</span>); <span class="fn">digitalWrite</span>(<span class="num">10</span>,LOW);
+    } <span class="kw">else</span> {
+      lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="str">"ACCESS DENIED!  "</span>);
+      <span class="fn">tone</span>(<span class="num">12</span>,<span class="num">200</span>,<span class="num">1000</span>); <span class="fn">digitalWrite</span>(<span class="num">11</span>,HIGH); <span class="fn">delay</span>(<span class="num">2000</span>); <span class="fn">digitalWrite</span>(<span class="num">11</span>,LOW);
+    }
+    inputStr=<span class="str">""</span>;
+    <span class="kw">return</span>;
+  }
+
+  inputStr += key;
+  lcd.<span class="fn">setCursor</span>(inputStr.<span class="fn">length</span>()-<span class="num">1</span>, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">'*'</span>);
+}`
+},
+{
+  id:11, emoji:"📊", color:"#e8f5e9", diff:"medium", diffLabel:"⭐⭐ Medium",
+  title:"Sensor Dashboard",
+  subtitle:"Cycle DHT11, distance, light & motion readings on LCD",
+  desc:"Turn your kit into a full sensor station! Press a button to cycle through all sensor readings on the LCD — temperature, humidity, distance, light level, and motion.",
+  parts:["Arduino Uno","DHT11","HC-SR04","LDR Module","PIR Sensor","16×2 LCD","Push Button"],
+  tinkercad:"https://www.tinkercad.com/things/sensor-dashboard-lcd-arduino",
+  pinout:[
+    {comp:"DHT11 DATA",pin:"",to:"→",dest:"Pin 7"},
+    {comp:"HC-SR04 TRIG",pin:"",to:"→",dest:"Pin 9"},
+    {comp:"HC-SR04 ECHO",pin:"",to:"→",dest:"Pin 10"},
+    {comp:"LDR Module AO",pin:"",to:"→",dest:"A0"},
+    {comp:"PIR OUT",pin:"",to:"→",dest:"Pin 8"},
+    {comp:"Button",pin:"",to:"→",dest:"Pin 6 (+ 10kΩ to GND)"},
+    {comp:"LCD",pin:"(all)",to:"→",dest:"A1,A2,A3,A4,A5 + 13"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Wire all sensors",body:"Connect all 4 sensors using the pin table. This project is the most wiring-heavy — take it slow and double-check each connection before powering on!"},
+    {color:"#1A73E8",title:"Add the mode button",body:"Connect a push button to Pin 6 with a 10kΩ pull-down resistor to GND. Each button press cycles to the next sensor reading on the LCD."},
+    {color:"#FF6B35",title:"Install all libraries",body:"You need: DHT sensor library (Adafruit) and LiquidCrystal (built-in). Install from Tools → Manage Libraries."},
+    {color:"#2ECC71",title:"Explore all modes",body:"Press the button to cycle through 5 screens: Temperature, Humidity, Distance, Light Level, and Motion Status. Great for showing off your full kit!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Init LCD, DHT11, all sensor pins, mode=0"},
+    {type:"loop",icon:"🔁",text:"Loop: Check button press → change mode if pressed"},
+    {type:"cond",icon:"1️⃣",text:"Mode 0: Show Temperature from DHT11"},
+    {type:"cond",icon:"2️⃣",text:"Mode 1: Show Humidity from DHT11"},
+    {type:"cond",icon:"3️⃣",text:"Mode 2: Show Distance from HC-SR04"},
+    {type:"cond",icon:"4️⃣",text:"Mode 3: Show Light level from LDR"},
+    {type:"action",icon:"5️⃣",text:"Mode 4: Show Motion status from PIR"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;DHT.h&gt;</span>
+
+LiquidCrystal <span class="fn">lcd</span>(<span class="num">13</span>, A5, A4, A3, A2, A1);
+DHT <span class="fn">dht</span>(<span class="num">7</span>, DHT11);
+
+<span class="kw">const int</span> BTN=<span class="num">6</span>, TRIG=<span class="num">9</span>, ECHO=<span class="num">10</span>, PIR=<span class="num">8</span>;
+<span class="kw">int</span> mode = <span class="num">0</span>;
+<span class="kw">bool</span> lastBtn = LOW;
+
+<span class="kw">long</span> <span class="fn">getDist</span>() {
+  <span class="fn">digitalWrite</span>(TRIG,LOW); <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(TRIG,HIGH); <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(TRIG,LOW);
+  <span class="kw">return</span> <span class="fn">pulseIn</span>(ECHO,HIGH)*<span class="num">0.034</span>/<span class="num">2</span>;
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  lcd.<span class="fn">begin</span>(<span class="num">16</span>,<span class="num">2</span>); dht.<span class="fn">begin</span>();
+  <span class="fn">pinMode</span>(BTN,INPUT); <span class="fn">pinMode</span>(TRIG,OUTPUT); <span class="fn">pinMode</span>(ECHO,INPUT); <span class="fn">pinMode</span>(PIR,INPUT);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">bool</span> btn = <span class="fn">digitalRead</span>(BTN);
+  <span class="kw">if</span> (btn && !lastBtn) { mode = (mode+<span class="num">1</span>) % <span class="num">5</span>; <span class="fn">delay</span>(<span class="num">50</span>); lcd.<span class="fn">clear</span>(); }
+  lastBtn = btn;
+
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">0</span>);
+  <span class="kw">switch</span>(mode) {
+    <span class="kw">case</span> <span class="num">0</span>: lcd.<span class="fn">print</span>(<span class="str">"Temperature:    "</span>); lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(dht.<span class="fn">readTemperature</span>(),<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="str">" C          "</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">1</span>: lcd.<span class="fn">print</span>(<span class="str">"Humidity:       "</span>); lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(dht.<span class="fn">readHumidity</span>(),<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="str">" %          "</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>: lcd.<span class="fn">print</span>(<span class="str">"Distance:       "</span>); lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="fn">getDist</span>()); lcd.<span class="fn">print</span>(<span class="str">" cm         "</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">3</span>: lcd.<span class="fn">print</span>(<span class="str">"Light Level:    "</span>); lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="fn">analogRead</span>(A0)); lcd.<span class="fn">print</span>(<span class="str">"   (0-1023)  "</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">4</span>: lcd.<span class="fn">print</span>(<span class="str">"Motion:         "</span>); lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="fn">digitalRead</span>(PIR)?<span class="str">"DETECTED!       "</span>:<span class="str">"All clear       "</span>); <span class="kw">break</span>;
+  }
+  <span class="fn">delay</span>(<span class="num">300</span>);
+}`
+},
+{
+  id:12, emoji:"🎮", color:"#e3f2fd", diff:"hard", diffLabel:"⭐⭐⭐ Advanced",
+  title:"Manual Robot Control",
+  subtitle:"Use keypad buttons for forward, back, left, right, stop",
+  desc:"Take control! Use the 4×4 keypad to drive your robot manually. This is your ultimate kit project combining everything: motors, keypad, and LCD status display!",
+  parts:["Arduino Uno","2WD Chassis","2× Geared Motors","L298N Driver","4×4 Keypad","16×2 LCD","Battery Pack"],
+  tinkercad:"https://www.tinkercad.com/things/manual-robot-keypad-control",
+  pinout:[
+    {comp:"Keypad Rows",pin:"R1–R4",to:"→",dest:"Arduino Pins 2,3,4,5"},
+    {comp:"Keypad Cols",pin:"C1–C4",to:"→",dest:"Arduino Pins 6,7,8,9"},
+    {comp:"L298N IN1–IN4",pin:"",to:"→",dest:"Arduino Pins A1,A2,A3,A4"},
+    {comp:"L298N ENA",pin:"",to:"→",dest:"Pin 10 (PWM)"},
+    {comp:"L298N ENB",pin:"",to:"→",dest:"Pin 11 (PWM)"},
+    {comp:"LCD",pin:"",to:"→",dest:"13,12 + A5,A0,A1→repurpose"},
+    {comp:"Battery",pin:"(+)",to:"→",dest:"L298N VCC"},
+    {comp:"Battery",pin:"(−)",to:"→",dest:"L298N GND + Arduino GND"},
+  ],
+  steps:[
+    {color:"#7C4DFF",title:"Assemble the robot chassis",body:"Mount motors, attach wheels, install Arduino and L298N on top. Run the battery pack cables to the L298N's motor power input. Make sure all ground connections are common!"},
+    {color:"#1A73E8",title:"Wire the keypad",body:"8 wires from keypad: 4 row pins to digital 2–5, 4 column pins to digital 6–9. The Keypad library handles all the scanning."},
+    {color:"#FF6B35",title:"Control mapping",body:"2 = Forward, 8 = Backward, 4 = Turn Left, 6 = Turn Right, 5 = STOP. Just like an old phone keypad! The LCD shows the current command."},
+    {color:"#2ECC71",title:"Adjust speed",body:"Change the analogWrite value (0–255) in the code to control motor speed. Start slow (150) to prevent crashes while learning the controls!"},
+  ],
+  blockcode:[
+    {type:"setup",icon:"⚙️",text:"Setup: Init keypad, LCD, motor driver pins"},
+    {type:"loop",icon:"🔁",text:"Loop: Wait for keypad key press"},
+    {type:"cond",icon:"⬆️",text:"Key '2' → FORWARD → show on LCD"},
+    {type:"cond",icon:"⬇️",text:"Key '8' → BACKWARD → show on LCD"},
+    {type:"cond",icon:"↩️",text:"Key '4' → TURN LEFT → show on LCD"},
+    {type:"cond",icon:"↪️",text:"Key '6' → TURN RIGHT → show on LCD"},
+    {type:"action",icon:"⛔",text:"Key '5' → STOP → show on LCD"},
+  ],
+  code:`<span class="pp">#include</span> <span class="str">&lt;Keypad.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal.h&gt;</span>
+
+LiquidCrystal <span class="fn">lcd</span>(<span class="num">13</span>, <span class="num">12</span>, A5, A4, A3, A2);
+
+<span class="kw">const byte</span> ROWS=<span class="num">4</span>,COLS=<span class="num">4</span>;
+<span class="kw">char</span> keys[ROWS][COLS]={{'<span class="str">1','2','3','A'},{'4','5','6','B'},{'7','8','9','C'},{'*','0','#','D'}};
+<span class="kw">byte</span> rPins[4]={2,3,4,5},cPins[4]={6,7,8,9};
+Keypad kpd(makeKeymap(keys),rPins,cPins,ROWS,COLS);
+
+int IN1=A1,IN2=A0,IN3=A3,IN4=A4, ENA=10, ENB=11;
+
+void setMotors(int a,int b,int c,int d){
+  digitalWrite(IN1,a);digitalWrite(IN2,b);
+  digitalWrite(IN3,c);digitalWrite(IN4,d);
+}
+void forward()  { setMotors(HIGH,LOW,HIGH,LOW); }
+void backward() { setMotors(LOW,HIGH,LOW,HIGH); }
+void left()     { setMotors(LOW,HIGH,HIGH,LOW); }
+void right()    { setMotors(HIGH,LOW,LOW,HIGH); }
+void stopBot()  { setMotors(LOW,LOW,LOW,LOW); }
+
+void showCmd(String cmd) {
+  lcd.setCursor(0,1); lcd.print(cmd);lcd.print("          ");
+}
+
+void setup() {
+  lcd.begin(16,2); lcd.print("Robot Ready!    ");
+  int mp[]={IN1,IN2,IN3,IN4,ENA,ENB};
+  for(int i=0;i<6;i++) pinMode(mp[i],OUTPUT);
+  analogWrite(ENA,180); analogWrite(ENB,180);
+  lcd.setCursor(0,1); lcd.print("Press 2/4/5/6/8");
+}
+
+void loop() {
+  char k = kpd.getKey();
+  if(!k) return;
+  switch(k) {
+    case '</span><span class="num">2</span><span class="str">': forward();  showCmd("FORWARD "); break;
+    case '</span><span class="num">8</span><span class="str">': backward(); showCmd("BACKWARD"); break;
+    case '</span><span class="num">4</span><span class="str">': left();     showCmd("LEFT    "); break;
+    case '</span><span class="num">6</span><span class="str">': right();    showCmd("RIGHT   "); break;
+    case '</span><span class="num">5</span><span class="str">': stopBot();  showCmd("STOP    "); break;
+  }
+}'</span>`
+}
+];
+
+// ══════════════════════════════════════
+// RENDER PROJECT CARDS
+// ══════════════════════════════════════
+function renderCards(){
+  const grid = document.getElementById('projGrid');
+  grid.innerHTML = PROJECTS.map(p => `
+    <div class="proj-card" onclick="openProject(${p.id})">
+      <div class="proj-head">
+        <div class="proj-emoji" style="background:${p.color}">${p.emoji}</div>
+        <div class="proj-meta">
+          <h3>${p.title}</h3>
+          <span class="diff ${p.diff}">${p.diffLabel}</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <p>${p.desc}</p>
+        <div class="parts">${p.parts.map(pt=>`<span class="part">${pt}</span>`).join('')}</div>
+        <button class="open-btn">Open Full Guide →</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════
+// TAB NAVIGATION
+// ══════════════════════════════════════
+function showTab(id, el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ══════════════════════════════════════
+// OPEN PROJECT DETAIL
+// ══════════════════════════════════════
+function openProject(id){
+  const p = PROJECTS.find(x=>x.id===id);
+  if(!p) return;
+
+  // Hero
+  const diffColors = {easy:'#2ECC71',medium:'#FF6B35',hard:'#e53935'};
+  document.getElementById('d-badge').textContent = p.diffLabel;
+  document.getElementById('d-badge').style.cssText = `background:${diffColors[p.diff]};color:white;`;
+  document.getElementById('d-title').innerHTML = `${p.emoji} <span>${p.title}</span>`;
+  document.getElementById('d-desc').textContent = p.desc;
+  document.getElementById('d-chips').innerHTML = p.parts.map(pt=>`<div class="detail-chip">${pt}</div>`).join('');
+
+  // Body
+  const body = document.getElementById('detail-body');
+  body.innerHTML = `
+    <div class="tip">
+      <div class="icon">💡</div>
+      <p>Read the full guide before connecting any wires. Always double-check your circuit against the pin table before uploading code!</p>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="d-section">
+      <div class="d-section-title">🧠 How It Works</div>
+      <div class="steps">${p.steps.map((s,i)=>`
+        <div class="step">
+          <div class="step-num" style="background:${s.color}">${i+1}</div>
+          <div>
+            <h4>${s.title}</h4>
+            <p>${s.body}</p>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- CIRCUIT -->
+    <div class="d-section">
+      <div class="d-section-title">🔌 Circuit Diagram & Connections</div>
+      <div class="circuit-box">
+        <div class="circuit-img-placeholder">
+          <div class="icon">📐</div>
+          <p style="font-weight:800;font-size:15px;color:#1a1a2e;margin-bottom:6px;">View Circuit on Tinkercad</p>
+          <p>Click the link below to see the full interactive circuit diagram with components and wiring in 3D!</p>
+        </div>
+        <table class="pin-table">
+          <thead><tr><th>Component</th><th>Pin / Terminal</th><th></th><th>Connect To</th></tr></thead>
+          <tbody>${p.pinout.map(row=>`
+            <tr>
+              <td class="pin-comp">${row.comp}</td>
+              <td>${row.pin}</td>
+              <td class="pin-to">${row.to}</td>
+              <td class="pin-dest">${row.dest}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <a class="tinkercad-link" href="${p.tinkercad}" target="_blank">
+          🔗 Open Interactive Circuit Diagram on Tinkercad →
+        </a>
+      </div>
+    </div>
+
+    <!-- BLOCK CODE -->
+    <div class="d-section">
+      <div class="d-section-title">🧩 How the Code Thinks (Block View)</div>
+      <div class="blockcode">
+        ${p.blockcode.map(b=>`
+          <div class="block block-${b.type}">
+            <span class="block-icon">${b.icon}</span>
+            <span>${b.text}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- CODE -->
+    <div class="d-section">
+      <div class="d-section-title">💻 Arduino Code</div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots">
+            <div class="dot" style="background:#ff5f56"></div>
+            <div class="dot" style="background:#ffbd2e"></div>
+            <div class="dot" style="background:#27c93f"></div>
+          </div>
+          <span>Project ${p.id} — ${p.title}.ino</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre class="code-pre">${p.code}</pre>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="proj-nav">
+      ${p.id > 1 ? `<button class="proj-nav-btn" onclick="openProject(${p.id-1})">← Project ${p.id-1}</button>` : '<div></div>'}
+      ${p.id < PROJECTS.length ? `<button class="proj-nav-btn next" onclick="openProject(${p.id+1})">Project ${p.id+1} →</button>` : '<div></div>'}
+    </div>
+  `;
+
+  // Show detail, hide main
+  document.getElementById('main-site').classList.remove('active');
+  document.getElementById('detail-page').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function goBack(){
+  document.getElementById('detail-page').style.display='none';
+  document.getElementById('main-site').classList.add('active');
+  // Switch to projects tab
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-projects').classList.add('active');
+  document.querySelectorAll('.tab')[1].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function copyCode(btn){
+  const pre = btn.closest('.code-block').querySelector('.code-pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy', 2000);
+  });
+}
+
+// Init
+renderCards();
+</script>
+</body>
+</html>
